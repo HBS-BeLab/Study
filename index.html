@@ -1,1 +1,38 @@
 
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Study Instructions</title></head>
+<body>
+  <h1>Daily Coding Task — Instructions</h1>
+  <p>Thank you! Each day (Mon–Fri and the following Monday) you’ll do a short coding task.</p>
+
+  <h2>How to proceed</h2>
+  <ol>
+    <li>Click the Day 1 link below to start. Use the same link each day or the emailed link we provided.</li>
+    <li>Complete the task and return tomorrow for the next day.</li>
+    <li>If you run into issues contact: research@email.example</li>
+  </ol>
+
+  <h3>Start Day</h3>
+  <!-- Replace TOKEN_PLACEHOLDER with actual token or the server will redirect with token in query -->
+  <a id="day1" href="#">Start Day 1</a><br>
+  <a id="day2" href="#">Day 2 (when available)</a><br>
+  <a id="day3" href="#">Day 3</a><br>
+  <a id="day4" href="#">Day 4</a><br>
+  <a id="day5" href="#">Day 5</a><br>
+  <a id="day6" href="#">Day 6</a><br>
+
+<script>
+// read token from current URL (your server redirect should attach it)
+const params = new URLSearchParams(window.location.search);
+const token = params.get('token') || 'TOKEN_PLACEHOLDER';
+
+// construct day links to your API that will validate and start the day
+const base = 'https://your-api.example/day/';
+for (let d=1; d<=6; d++) {
+  const el = document.getElementById('day' + d);
+  if (el) el.href = base + d + '?token=' + encodeURIComponent(token);
+}
+</script>
+</body>
+</html>
