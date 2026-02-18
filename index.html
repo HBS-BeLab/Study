@@ -1,37 +1,382 @@
 <!doctype html>
-<html>
-<head><meta charset="utf-8"><title>Study Instructions</title></head>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Daily Coding Task — Study Portal</title>
+
+  <!-- Google font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg: #f4f7f6;
+      --card: #ffffff;
+      --muted: #6b7280;
+      --accent: #2463ff;
+      --accent-2: #7b9cff;
+      --success: #16a34a;
+      --danger: #ef4444;
+      --glass: rgba(255,255,255,0.6);
+      --max-width: 1100px;
+      --radius: 12px;
+      --shadow: 0 8px 30px rgba(20,30,40,0.06);
+    }
+
+    html,body{height:100%;}
+    body{
+      margin:0;
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg,var(--bg), #eef3f9 100%);
+      color:#0f172a;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:32px 20px;
+      display:flex;
+      justify-content:center;
+    }
+
+    .container{
+      width:100%;
+      max-width:var(--max-width);
+    }
+
+    header {
+      display:flex;
+      align-items:center;
+      gap:20px;
+      margin-bottom:22px;
+    }
+    .logo {
+      width:68px;
+      height:68px;
+      border-radius:14px;
+      display:flex;align-items:center;justify-content:center;
+      background: linear-gradient(135deg,var(--accent),var(--accent-2));
+      color:white;font-weight:700;font-size:20px;
+      box-shadow: var(--shadow);
+    }
+    h1{ margin:0; font-size:1.6rem; letter-spacing: -0.01em;}
+    .subtitle { color:var(--muted); margin-top:6px; font-size:0.95rem; }
+
+    .layout {
+      display:grid;
+      grid-template-columns: 1fr 360px;
+      gap:20px;
+    }
+
+    /* Left Column */
+    .main-card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.95), var(--card));
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:20px;
+      overflow:hidden;
+    }
+
+    .section { margin-bottom:18px; }
+    .section h2 { margin:0 0 10px 0; font-size:1.05rem; }
+    .section p { margin:0 0 8px 0; color:var(--muted); line-height:1.5; }
+
+    .steps {
+      display:grid;
+      grid-template-columns: repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:12px;
+    }
+    .step {
+      background: linear-gradient(180deg,#fff, #fbfdff);
+      border-radius:10px;
+      padding:12px;
+      border:1px solid rgba(12,20,40,0.03);
+      text-align:center;
+      box-shadow: 0 6px 18px rgba(15,23,42,0.03);
+    }
+    .step .num { font-weight:700; font-size:0.95rem; color:var(--accent); }
+    .step p { font-size:0.9rem; color:var(--muted); margin-top:6px; }
+
+    /* Day tiles */
+    .days-grid {
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px,1fr));
+      gap:12px;
+      margin-top:12px;
+    }
+    .day {
+      background: linear-gradient(180deg,#fff,#f8fbff);
+      padding:12px;
+      border-radius:12px;
+      border:1px solid rgba(12,20,40,0.04);
+      box-shadow: 0 6px 18px rgba(10,20,40,0.03);
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .day .top { display:flex; justify-content:space-between; align-items:center; }
+    .day .label { font-weight:600; }
+    .badge {
+      font-size:0.8rem; padding:6px 8px; border-radius:999px; color:white; background:var(--accent);
+    }
+    .day .desc { color:var(--muted); font-size:0.9rem; }
+    .day .action { margin-top:auto; display:flex; gap:8px; }
+    .btn {
+      display:inline-flex; align-items:center; gap:8px;
+      background:var(--accent); color:white; border:none; padding:8px 12px; border-radius:8px;
+      cursor:pointer; text-decoration:none; font-weight:600;
+    }
+    .btn.ghost { background:transparent; color:var(--accent); border:1px solid rgba(36,99,255,0.12); }
+    .btn.disabled { background:#eee; color:#999; pointer-events:none; }
+
+    /* Right column */
+    aside.card {
+      background:var(--card);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow: var(--shadow);
+      height:fit-content;
+    }
+    .meta-row { display:flex; justify-content:space-between; margin-bottom:12px; align-items:center; }
+    .meta-row small { color:var(--muted); }
+
+    .contact {
+      margin-top:8px;
+      padding:10px;
+      border-radius:8px;
+      background:linear-gradient(180deg,#fcfcff,#fff);
+      border:1px solid rgba(12,20,40,0.03);
+    }
+
+    footer {
+      margin-top:18px;
+      text-align:center;
+      color:var(--muted);
+      font-size:0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width:980px) {
+      .layout { grid-template-columns: 1fr; }
+      header { gap:12px; }
+    }
+  </style>
+</head>
 <body>
-  <h1>Daily Coding Task — Instructions</h1>
-  <p>Thank you! Each day (Mon–Fri and the following Monday) you’ll do a short coding task.</p>
+  <div class="container">
+    <header>
+      <div class="logo">DC</div>
+      <div>
+        <h1 id="studyName">Daily Coding Task — Study Portal</h1>
+        <div class="subtitle" id="studySubtitle">Mon–Fri + following Monday • One short coding session per day (~1 hour)</div>
+      </div>
+    </header>
 
-  <h2>How to proceed</h2>
-  <ol>
-    <li>Click the Day 1 link below to start. Use the same link each day or the emailed link we provided.</li>
-    <li>Complete the task and return tomorrow for the next day.</li>
-    <li>If you run into issues contact: research@email.example</li>
-  </ol>
+    <div class="layout">
+      <!-- LEFT: main content -->
+      <main class="main-card" role="main" aria-labelledby="studyName">
+        <section class="section">
+          <h2>Overview</h2>
+          <p>This study asks participants to complete a brief text-coding task across six days. Each day shows rows one at a time; each row requires a label and a short evidence note. Some participants will have AI assistance or shortened workloads depending on random assignment.</p>
 
-  <h3>Start Day</h3>
-  <!-- Replace TOKEN_PLACEHOLDER with actual token or the server will redirect with token in query -->
-  <a id="day1" href="#">Start Day 1</a><br>
-  <a id="day2" href="#">Day 2 (when available)</a><br>
-  <a id="day3" href="#">Day 3</a><br>
-  <a id="day4" href="#">Day 4</a><br>
-  <a id="day5" href="#">Day 5</a><br>
-  <a id="day6" href="#">Day 6</a><br>
+          <div class="steps" aria-hidden="true">
+            <div class="step"><div class="num">1 • Consent</div><p>Start in Qualtrics and be randomized to a condition.</p></div>
+            <div class="step"><div class="num">2 • Start Day</div><p>Click your Day link below to open the task and begin.</p></div>
+            <div class="step"><div class="num">3 • Finish & Return</div><p>Finish the task and return tomorrow. We track progress for bonuses.</p></div>
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>How it works</h2>
+          <p>Use the same browser & device when possible. Your session is validated by a secure token passed in the link. The task app records start/end times, per-row times, and whether you leave the tab. We do not record your clipboard contents (only paste attempts).</p>
+        </section>
+
+        <section class="section">
+          <h2>Daily Tasks</h2>
+          <p class="muted">Click the day you want to complete. Links include a session token that the server validates.</p>
+
+          <div class="days-grid" id="daysGrid">
+            <!-- Day tiles are generated by JS -->
+          </div>
+        </section>
+
+        <section class="section">
+          <h2>FAQ & Issues</h2>
+          <p><strong>Q:</strong> I lost my token link. <br><strong>A:</strong> Contact the study team with your participant code or email and we will reissue a link.</p>
+          <p><strong>Q:</strong> Can I do multiple days at once?<br><strong>A:</strong> You should complete one day per scheduled date unless otherwise instructed by the team.</p>
+        </section>
+
+      </main>
+
+      <!-- RIGHT: metadata / contact -->
+      <aside class="card" aria-label="Study details">
+        <div class="meta-row">
+          <div>
+            <small>Study</small><br>
+            <strong id="metaStudy">Daily Coding Task</strong>
+          </div>
+          <div>
+            <small>Estimated time</small><br>
+            <strong>~1 hour</strong>
+          </div>
+        </div>
+
+        <div class="contact">
+          <strong>Contact</strong>
+          <p class="muted">If you run into issues include your participant code and/or the link token.</p>
+          <p style="margin:8px 0;"><a id="contactEmail" href="mailto:research@example.com">research@example.com</a></p>
+        </div>
+
+        <div style="margin-top:12px">
+          <button id="helpBtn" class="btn ghost" style="width:100%;">Report a problem / ask a question</button>
+        </div>
+
+        <div style="margin-top:12px; font-size:0.9rem; color:var(--muted)">
+          <p><strong>Notes</strong></p>
+          <p>Do not share your session links. Use the same device/broswer if possible.</p>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      <small>Version: polished-instructions v1 • This page is static; day links validate on the server.</small>
+    </footer>
+  </div>
+
+  <!-- Modal (simple) -->
+  <div id="modal" style="display:none; position:fixed; inset:0; background:rgba(10,12,20,0.45); align-items:center; justify-content:center; z-index:9999;">
+    <div style="background:white; padding:18px; border-radius:12px; max-width:560px; width:92%; box-shadow: 0 20px 60px rgba(10,20,40,0.5);">
+      <h3 style="margin-top:0">Report a problem</h3>
+      <p class="muted">Please detail the issue and include your participant code or link token. We'll reply to: <strong id="modalContactEmail">research@example.com</strong></p>
+      <textarea id="modalText" rows="6" style="width:100%; padding:10px; border-radius:8px; border:1px solid #eee;"></textarea>
+      <div style="margin-top:10px; display:flex; gap:8px; justify-content:flex-end;">
+        <button id="modalCancel" class="btn ghost">Cancel</button>
+        <button id="modalSend" class="btn">Send</button>
+      </div>
+    </div>
+  </div>
 
 <script>
-// read token from current URL (your server redirect should attach it)
+/* ========== CONFIG: update this ========== */
+const baseDayUrl = 'https://your-api.example/day/'; // << REPLACE with your server day endpoint
+const progressUrl = 'https://your-api.example/api/progress'; // optional: endpoint to fetch progress (GET ?token=...)
+const contact = 'research@example.com';
+/* ========================================== */
+
+document.getElementById('contactEmail').href = 'mailto:' + contact;
+document.getElementById('modalContactEmail').textContent = contact;
+
+// read token from querystring (or fallback)
 const params = new URLSearchParams(window.location.search);
 const token = params.get('token') || 'TOKEN_PLACEHOLDER';
 
-// construct day links to your API that will validate and start the day
-const base = 'https://your-api.example/day/';
-for (let d=1; d<=6; d++) {
-  const el = document.getElementById('day' + d);
-  if (el) el.href = base + d + '?token=' + encodeURIComponent(token);
+// number of days (1..6)
+const TOTAL_DAYS = 6;
+
+// helper to create day tile HTML
+function makeDayTile(day, status='locked') {
+  // status: locked, available, done
+  const tile = document.createElement('div');
+  tile.className = 'day';
+  const top = document.createElement('div');
+  top.className = 'top';
+  const label = document.createElement('div');
+  label.className = 'label';
+  label.textContent = 'Day ' + day;
+  top.appendChild(label);
+
+  const badge = document.createElement('div');
+  badge.className = 'badge';
+  if (status === 'done') {
+    badge.textContent = 'Done';
+    badge.style.background = 'var(--success)';
+  } else if (status === 'available') {
+    badge.textContent = 'Available';
+  } else {
+    badge.textContent = 'Locked';
+    badge.style.background = '#9aa3b2';
+  }
+  top.appendChild(badge);
+  tile.appendChild(top);
+
+  const desc = document.createElement('div');
+  desc.className = 'desc';
+  desc.textContent = 'Short coding task • ≈ 1 hour';
+  tile.appendChild(desc);
+
+  const action = document.createElement('div');
+  action.className = 'action';
+
+  const link = document.createElement('a');
+  link.className = 'btn';
+  link.textContent = status === 'done' ? 'View' : 'Start';
+  link.target = '_blank';
+
+  // construct link only if token is present: server validates
+  link.href = baseDayUrl + day + '?token=' + encodeURIComponent(token);
+
+  if (status === 'locked') {
+    link.classList.add('disabled');
+    link.href = '#';
+  }
+
+  // quick QC indicator of token placeholder
+  if (token === 'TOKEN_PLACEHOLDER') {
+    if (day !== 1) { link.classList.add('disabled'); link.href = '#'; }
+  }
+
+  action.appendChild(link);
+
+  const btn2 = document.createElement('button');
+  btn2.className = 'btn ghost';
+  btn2.textContent = 'Info';
+  btn2.onclick = () => alert('Day ' + day + ' will show X rows and the rubric for that day.'); // placeholder
+  action.appendChild(btn2);
+
+  tile.appendChild(action);
+  return tile;
 }
+
+// initial render: locked all except day 1 for quick demo
+const grid = document.getElementById('daysGrid');
+for (let d=1; d<=TOTAL_DAYS; d++){
+  const status = (d===1) ? 'available' : 'locked';
+  grid.appendChild(makeDayTile(d,status));
+}
+
+// OPTIONAL: fetch progress from server to update tiles
+// server should return JSON: { completed: [1,2], nextAvailable: 3 }
+// uncomment when you have a progress endpoint available
+/*
+if (token !== 'TOKEN_PLACEHOLDER') {
+  fetch(progressUrl + '?token=' + encodeURIComponent(token))
+    .then(r => r.json())
+    .then(json => {
+      const completed = json.completed || [];
+      const next = json.nextAvailable || (completed.length ? completed[completed.length-1] + 1 : 1);
+      grid.innerHTML = '';
+      for (let d=1; d<=TOTAL_DAYS; d++){
+        let status = 'locked';
+        if (completed.includes(d)) status = 'done';
+        else if (d === next) status = 'available';
+        grid.appendChild(makeDayTile(d, status));
+      }
+      document.getElementById('progressText')?.textContent = completed.length ? 'Completed: ' + completed.join(', ') : 'Not started';
+    })
+    .catch(e => console.warn('progress fetch failed', e));
+}
+*/
+
+// Modal behavior
+const modal = document.getElementById('modal');
+document.getElementById('helpBtn').addEventListener('click', ()=> modal.style.display = 'flex');
+document.getElementById('modalCancel').addEventListener('click', ()=> modal.style.display = 'none');
+document.getElementById('modalSend').addEventListener('click', ()=> {
+  const text = document.getElementById('modalText').value.trim();
+  if (!text) { alert('Please describe the issue briefly.'); return; }
+  // send issue to server (placeholder) or open mailto
+  const mailto = 'mailto:' + contact + '?subject=' + encodeURIComponent('Study issue: participant help') + '&body=' + encodeURIComponent(text + '\n\nToken: ' + token);
+  window.location.href = mailto;
+  modal.style.display = 'none';
+});
 </script>
 </body>
 </html>
